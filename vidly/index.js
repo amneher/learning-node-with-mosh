@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const home = require('./routes/home');
 const genres = require('./routes/genres');
+const customers = require('./routes/customers');
 // We'll use Mongoose later...
 const MongoClient = require('mongodb').MongoClient;
 const helmet = require('helmet');
@@ -39,6 +40,7 @@ if (app.get('env') === 'development') {
 }
 // Import routes
 app.use('/api/genres', genres);
+app.use('/api/customers', customers);
 app.use('/', home);
 
 // debugging the db
