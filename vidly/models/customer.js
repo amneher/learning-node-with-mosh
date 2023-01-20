@@ -12,23 +12,31 @@ const customerSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		lowercase: true,
-		trim: true
+		trim: true,
+		minLength: 5,
+		maxLength: 255
 	},
 	lName: {
 		type: String,
 		required: true,
 		lowercase: true,
-		trim: true
+		trim: true,
+		minLength: 5,
+		maxLength: 255
 	},
 	email: {
 		type: String,
 		required: true,
 		lowercase: true,
-		trim: true
+		trim: true,
+		minLength: 5,
+		maxLength: 255
 	},
 	phone: {
 		type: String,
-		required: false
+		required: false,
+		minLength: 5,
+		maxLength: 255
 	},
 	isActive: {
 		type: Boolean,
