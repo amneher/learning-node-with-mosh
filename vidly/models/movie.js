@@ -31,7 +31,8 @@ function validateMovie(movie) {
 		genre: Joi.object({
 			name: Joi.string().min(3).required(),
 			isActive: Joi.boolean()
-		})
+		}),
+		dailyRentalRate: Joi.number()
 	});
 	return schema.validate(movie);
 };

@@ -18,7 +18,7 @@ router.get('/byId/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-	const { error } = Movie.validateGenre(req.body);
+	const { error } = Movie.validateMovie(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 	const movie = new Movie({
 		name: data.name,
