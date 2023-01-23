@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const genreSchema = new mongoose.Schema({
 	name: {
@@ -58,9 +59,19 @@ async function deleteGenre(id) {
 	return genre;
 }
 
+function validateGenre(genre) {
+	const schema = Joi.object({
+		name: Joi.string().min(3).required(),
+		isActive: Joi.boolean()
+	});
+	return schema.validate(genre);
+};
+
+module.exports.genreSchema = genreSchema
 module.exports.getAllGenres = getAllGenres
 module.exports.createGenre = createGenre
 module.exports.getGenreById = getGenreById
 module.exports.getGenreByName = getGenreByName
 module.exports.updateGenre = updateGenre
 module.exports.deleteGenre = deleteGenre
+module.exports.validateGenre = validateGenre

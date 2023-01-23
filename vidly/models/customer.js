@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 function arrayValidator(v) {
 	return new Promise((resolve, reject) => {
@@ -110,9 +111,22 @@ async function deleteCustomer(id) {
 	return customer;
 }
 
+function validateCustomer(customer) {
+	const schema = Joi.object({
+		fName: Joi.string().min(5).max(255).required(),
+		lName: Joi.string().min(5).max(255).required(),
+		email: Joi.string().min(5).max(255).required(),
+		phone: Joi.string().min(5).max(255),
+		isGold: Joi.boolean(),
+		favoriteGenres: Joi.array().required()
+	});
+	return schema.validate(customer);
+};
+
 module.exports.getAllCustomers = getAllCustomers
 module.exports.getCustomerById = getCustomerById
 module.exports.getCustomer = getCustomer
 module.exports.createCustomer = createCustomer
 module.exports.updateCustomer = updateCustomer
 module.exports.deleteCustomer = deleteCustomer
+module.exports.validateCustomer = validateCustomer
