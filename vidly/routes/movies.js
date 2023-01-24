@@ -1,50 +1,53 @@
 const express = require('express');
 const router = express.Router();
 
-const Movie = require('../models/movie')
+const movie = require('../models/movie')
 
 router.get('/', async (req, res) => {
-	const movies = await Movie.find();
+	const movies = await movie.Movie.find();
 	console.log(movies)
 	res.send(movies);
 });
 
 router.get('/byId/:id', async (req, res) => {
 	const movie_id = req.params.id;
-	const movie = await Movie.findById(id);
-	if (!movie) return res.status(404).send('Movie not found.');
+	const result = await movie.Movie.findById(movie_id);
+	if (!result) return res.status(404).send('Movie not found.');
 
-	res.send(movie);
+	res.send(result);
 });
 
 router.post('/', async (req, res) => {
-	const { error } = Movie.validateMovie(req.body);
-	if (error) return res.status(400).send(error.details[0].message);
-	const movie = new Movie({
-		name: data.name,
+	const { error } = movie.validateMovie(req.body);
+	if (error) return res.status(400).send(error);
+	const m_obj = new movie.Movie({
+		title: req.body.title,
 		genre: {
 			name: req.body.genre.name,
 			isActive: req.body.genre.isActive
-		}
+		},
+		numberInStock: req.body.numberInStock,
+		dailyRentalRate: req.body.dailyRentalRate
 	})
 	try {
-		const result = movie.save();
+		const result = m_obj.save();
 		res.send(result);
 	}
 	catch (ex) {
-		for (field in ex.errors) {
-			console.log(ex.errors[field]);
-		}
+		console.log(ex);
+		return res.status(404).send('Movie not found.');
 	}
 });
 
 router.put('/:id', async (req,res) => {
 	const movie_id = req.params.id;
-	const movie = await Movie.findOneAndUpdate(id, data);
-	res.send(movie);
+	const result = await movie.Movie.findOneAndUpdate(movie_id, req.body);
+	res.send(result);
 });
 
 router.delete('/:id', async (req, res) => {
-	const movie = await Movie.deleteOne({ _id: req.params.id });
-	res.send(movie);
-})
+	const result = await movie.Movie.deleteOne({ _id: req.params.id });
+	res.send(result);
+});
+
+module.exports = router;
