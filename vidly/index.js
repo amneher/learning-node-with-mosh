@@ -5,6 +5,7 @@ const home = require('./routes/home');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
+const rentals = require('./routes/rentals');
 // We'll use Mongoose later...
 const MongoClient = require('mongodb').MongoClient;
 const helmet = require('helmet');
@@ -43,6 +44,7 @@ if (app.get('env') === 'development') {
 app.use('/api/genres', genres);
 app.use('/api/customers', customers);
 app.use('/api/movies', movies);
+app.use('/api/rentals', rentals);
 app.use('/', home);
 
 // debugging the db

@@ -123,10 +123,12 @@ function validateCustomer(customer) {
 	return schema.validate(customer);
 };
 
-module.exports.getAllCustomers = getAllCustomers
-module.exports.getCustomerById = getCustomerById
-module.exports.getCustomer = getCustomer
-module.exports.createCustomer = createCustomer
-module.exports.updateCustomer = updateCustomer
-module.exports.deleteCustomer = deleteCustomer
-module.exports.validateCustomer = validateCustomer
+module.exports.Customer = Customer;
+module.exports.customerSchema = customerSchema;
+module.exports.getAllCustomers = getAllCustomers;
+module.exports.getCustomerById = getCustomerById;
+module.exports.getCustomer = getCustomer;
+module.exports.createCustomer = createCustomer;
+module.exports.updateCustomer = updateCustomer;
+module.exports.deleteCustomer = deleteCustomer;
+module.exports.validateCustomer = validateCustomer;
