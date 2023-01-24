@@ -1,43 +1,54 @@
 const express = require('express');
+const rentalModel = require('../models/rental');
+const customerModel = require('../models/customer');
+const movieModel = require('../models/movie');
+const mongoose = require('mongoose');
 const router = express.Router();
 
-const rental = require('../models/rental')
-
 router.get('/', async (req, res) => {
-	const rentals = await rental.Rental.find();
+	const rentals = await rentalModel.Rental.find();
 	console.log(rentals)
 	res.send(rentals);
 });
 
 router.get('/byId/:id', async (req, res) => {
-	const rental_id = req.params.id;
-	const result = await rental.Rental.findById(rental_id);
-	if (!result) return res.status(404).send('Rental not found.');
+	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
+		const rental_id = req.params.id;
+		const result = await rentalModel.Rental.findById(rental_id);
+		if (!result) return res.status(404).send('Rental not found.');
 
-	res.send(result);
+		res.send(result);
+	}
+	else {
+		return res.status(400).send('Invalid Rental Id.');
+	}
 });
 
 router.post('/', async (req, res) => {
-	const { error } = rental.validateRental(req.body);
+	const { error } = rentalModel.validateRental(req.body);
 	if (error) return res.status(400).send(error);
-	const m_obj = new rental.Rental({
-		customer: req.body.customer,
-		movie: {
-			title: req.body.movie.title,
-			genre: {
-				name: req.body.movie.genre.name,
-				isActive: req.body.movie.genre.isActive
-			},
-			numberInStock: req.body.movie.numberInStock,
-			dailyRentalRate: req.body.movie.dailyRentalRate
+	const customer = await customerModel.Customer.findById(req.body.customer);
+	if (!customer) return res.status(400).send("Customer not found.");
+	const movie = await movieModel.Movie.findById(req.body.movie);
+	if (!movie) return res.status(400).send("Movie not found.");
+
+	const rental = new rentalModel.Rental({
+		customer: {
+			_id: customer._id,
+			name: customer.name,
+			email: customer.email
 		},
-		rentalDate: req.body.rentalDate,
-		rentalDuration: req.body.rentalDuration,
-		isOverdue: req.body.isOverdue
+		movie: {
+			_id: movie._id,
+			title: movie.title,
+			dailyRentalRate: movie.dailyRentalRate
+		}
 	});
 	try {
-		const result = m_obj.save();
-		res.send(result);
+		const result = await rental.save();
+		movie.numberInStock--;
+		movie.save();
+		res.send(rental);
 	}
 	catch (ex) {
 		console.log(ex);
@@ -46,14 +57,24 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req,res) => {
-	const rental_id = req.params.id;
-	const result = await rental.Rental.findOneAndUpdate(rental_id, req.body);
-	res.send(result);
+	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
+		const rental_id = req.params.id;
+		const result = await rentalModel.Rental.findOneAndUpdate({ _id: rental_id }, req.body);
+		res.send(result);
+	}
+	else {
+		return res.status(400).send('Invalid Rental Id.');
+	}
 });
 
 router.delete('/:id', async (req, res) => {
-	const result = await rental.Rental.deleteOne({ _id: req.params.id });
-	res.send(result);
+	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
+		const result = await rentalModel.Rental.deleteOne({ _id: req.params.id });
+		res.send(result);
+	}
+	else {
+		return res.status(400).send('Invalid Rental Id.');
+	}
 });
 
 module.exports = router;

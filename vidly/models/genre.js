@@ -50,7 +50,7 @@ async function getGenreByName(name) {
 }
 
 async function updateGenre(id, data) {
-	const genre = await Genre.findOneAndUpdate(id, data);
+	const genre = await Genre.findOneAndUpdate({ _id: id }, data);
 	return genre;
 }
 
@@ -67,6 +67,7 @@ function validateGenre(genre) {
 	return schema.validate(genre);
 };
 
+module.exports.Genre = Genre
 module.exports.genreSchema = genreSchema
 module.exports.getAllGenres = getAllGenres
 module.exports.createGenre = createGenre

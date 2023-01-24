@@ -11,8 +11,8 @@ const rentalSchema = new mongoose.Schema({
 		// required: true
 	},
 	movie: {
-		type: movie.movieSchema,
-		required: true
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'movie.Movie'
 	},
 	rentalDate: {
 		type: Date,
@@ -39,18 +39,7 @@ function validateRental(rental) {
 		// 	favoriteGenres: Joi.array().required()
 		// }),
 		customer: Joi.string().required(),
-		movie: Joi.object({
-			title: Joi.string().min(2).required(),
-			genre: Joi.object({
-				name: Joi.string().min(3).required(),
-				isActive: Joi.boolean()
-			}),
-			numberInStock: Joi.number(),
-			dailyRentalRate: Joi.number()
-		}),
-		rentalDate: Joi.date(),
-		rentalDuration: Joi.number().min(2).max(15),
-		isOverdue: Joi.boolean()
+		movie: Joi.string().required()
 	});
 	return schema.validate(rental);
 };

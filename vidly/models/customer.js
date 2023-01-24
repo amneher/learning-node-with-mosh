@@ -102,7 +102,7 @@ async function createCustomer(data) {
 }
 
 async function updateCustomer(id, data) {
-	const customer = await Customer.findOneAndUpdate(id, data);
+	const customer = await Customer.findOneAndUpdate({ _id: id }, data);
 	return customer;
 }
 
