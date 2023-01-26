@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
 const movie = require('../models/movie');
@@ -23,7 +24,7 @@ router.get('/byId/:id', async (req, res) => {
 	}
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
 	const { error } = movie.validateMovie(req.body);
 	if (error) return res.status(400).send(error);
 	const genre = await genreModel.Genre.findById(req.body.genreId);
@@ -39,8 +40,7 @@ router.post('/', async (req, res) => {
 		dailyRentalRate: req.body.dailyRentalRate
 	})
 	try {
-		const result = m_obj.save();
-		res.send(result);
+		res.send(m_obj);
 	}
 	catch (ex) {
 		console.log(ex);
@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
 	}
 });
 
-router.put('/:id', async (req,res) => {
+router.put('/:id', auth, async (req,res) => {
 	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
 		const movie_id = req.params.id;
 		const result = await movie.Movie.findOneAndUpdate({ _id: movie_id }, req.body);
@@ -59,7 +59,7 @@ router.put('/:id', async (req,res) => {
 	}
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
 	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
 		const result = await movie.Movie.deleteOne({ _id: req.params.id });
 		res.send(result);

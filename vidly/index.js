@@ -1,7 +1,10 @@
 const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
 const express = require('express');
 const mongoose = require('mongoose');
 const home = require('./routes/home');
+const users = require('./routes/users');
+const auth = require('./routes/auth');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
@@ -15,7 +18,15 @@ const config = require('config');
 const startupDebugger = require('debug')('app:startup');
 const dbDebugger = require('debug')('app:db');
 const log = require('./middleware/logger');
-const auth = require('./auth');
+
+if (!config.get('jwtPrivateKey')) {
+	console.log("FATAL ERROR: jwtPrivateKey is not defined.");
+	process.exit(1);
+}
+if (!config.get('mail.password')) {
+	console.log("FATAL ERROR: mail.password is not defined.");
+	process.exit(1);
+}
 
 const app = express();
 app.set('view engine', 'pug');
@@ -46,6 +57,8 @@ app.use('/api/customers', customers);
 app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
 app.use('/', home);
+app.use('/api/users', users);
+app.use('/api/auth', auth);
 
 // debugging the db
 dbDebugger('Debugging the db . . . ');

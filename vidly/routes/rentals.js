@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../middleware/auth');
 const rentalModel = require('../models/rental');
 const customerModel = require('../models/customer');
 const movieModel = require('../models/movie');
@@ -24,7 +25,7 @@ router.get('/byId/:id', async (req, res) => {
 	}
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
 	const { error } = rentalModel.validateRental(req.body);
 	if (error) return res.status(400).send(error);
 	const customer = await customerModel.Customer.findById(req.body.customer);
@@ -45,7 +46,6 @@ router.post('/', async (req, res) => {
 		}
 	});
 	try {
-		const result = await rental.save();
 		movie.numberInStock--;
 		movie.save();
 		res.send(rental);
@@ -56,8 +56,8 @@ router.post('/', async (req, res) => {
 	}
 });
 
-router.put('/:id', async (req,res) => {
-	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
+router.put('/:id', auth, async (req,res) => {
+	if ( mongoose.Types.ObjectId.isValid(req.params.id) ) {
 		const rental_id = req.params.id;
 		const result = await rentalModel.Rental.findOneAndUpdate({ _id: rental_id }, req.body);
 		res.send(result);
@@ -67,8 +67,8 @@ router.put('/:id', async (req,res) => {
 	}
 });
 
-router.delete('/:id', async (req, res) => {
-	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
+router.delete('/:id', auth, async (req, res) => {
+	if ( mongoose.Types.ObjectId.isValid(req.params.id) ) {
 		const result = await rentalModel.Rental.deleteOne({ _id: req.params.id });
 		res.send(result);
 	}

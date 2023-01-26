@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
 const genre = require('./genre');
 
 
@@ -33,7 +34,7 @@ const movieSchema = new mongoose.Schema({
 function validateMovie(movie) {
 	const schema = Joi.object({
 		title: Joi.string().min(2).required(),
-		genreId: Joi.string().required(),
+		genreId: Joi.objectId().required(),
 		// genre: Joi.object({
 		// 	name: Joi.string().min(3).required(),
 		// 	isActive: Joi.boolean()

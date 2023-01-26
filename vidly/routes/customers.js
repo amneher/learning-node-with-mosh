@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
 const customerModel = require('../models/customer');
@@ -26,7 +27,7 @@ router.get('/byName/:fName', async (req, res) => {
 	res.send(customer);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
 	const { error } = customerModel.validateCustomer(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
@@ -41,7 +42,7 @@ router.post('/', async (req, res) => {
 	res.send(customer);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
 	let customer_id = req.params.id;
 	let customer = await customerModel.updateCustomer(customer_id, {
 		fName: req.body.fName,
@@ -58,7 +59,7 @@ router.put('/:id', async (req, res) => {
 	res.send(customer);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
 	let customer_id = req.params.id;
 	let customer = await customerModel.deleteCustomer(customer_id);
 	if (!customer) return res.status(404).send('Customer not found.');

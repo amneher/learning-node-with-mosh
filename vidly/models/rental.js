@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
 const movie = require('./movie');
 const customer = require('./customer');
 
@@ -38,8 +39,8 @@ function validateRental(rental) {
 		// 	email: Joi.string().min(5).max(255).required(),
 		// 	favoriteGenres: Joi.array().required()
 		// }),
-		customer: Joi.string().required(),
-		movie: Joi.string().required()
+		customer: Joi.objectId().required(),
+		movie: Joi.objectId().required()
 	});
 	return schema.validate(rental);
 };

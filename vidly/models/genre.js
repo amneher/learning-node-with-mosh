@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
 
 const genreSchema = new mongoose.Schema({
 	name: {
@@ -28,7 +29,7 @@ async function createGenre(data) {
 		isActive: data.isActive
 	})
 	try {
-		const result = genre.save();
+		return genre;
 	}
 	catch (ex) {
 		for (field in ex.errors) {
