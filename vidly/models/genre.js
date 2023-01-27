@@ -19,7 +19,7 @@ const Genre = new mongoose.model('Genre', genreSchema);
 
 function validateGenre(genre) {
 	const schema = Joi.object({
-		name: Joi.string().min(3).required(),
+		name: Joi.string().min(3).max(50).required(),
 		isActive: Joi.boolean()
 	});
 	return schema.validate(genre);
