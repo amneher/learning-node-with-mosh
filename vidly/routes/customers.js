@@ -5,22 +5,13 @@ const router = express.Router();
 const customerModel = require('../models/customer');
 
 router.get('/', async (req, res) => {
-	let customer = await customerModel.getAllCustomers();
+	let customer = await customerModel.Customer.find().sort('fName');
 	res.send(customer);
 });
 
 router.get('/:id', async (req, res) => {
 	let customer_id = req.params.id;
-	let customer = await customerModel.getCustomerById(customer_id);
-	console.log(customer)
-	if (!customer) return res.status(404).send('Customer not found.');
-
-	res.send(customer);
-});
-
-router.get('/byName/:fName', async (req, res) => {
-	let customer_name = req.params.name;
-	let customer = await customerModel.getCustomer({ fName: customer_name });
+	let customer = await customerModel.Customer.findById(id);
 	console.log(customer)
 	if (!customer) return res.status(404).send('Customer not found.');
 
@@ -31,40 +22,50 @@ router.post('/', auth, async (req, res) => {
 	const { error } = customerModel.validateCustomer(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
-	let customer = await customerModel.createCustomer({
-		fName: req.body.fName,
-		lName: req.body.lName,
-		email: req.body.email,
-		phone: req.body.phone,
-		isGold: req.body.isGold,
-		favoriteGenres: req.body.favoriteGenres
+	let customer = new customerModel.Customer({
+		fName: data.fName,
+		lName: data.lName,
+		email: data.email,
+		favoriteGenres: data.favoriteGenres
 	});
+	if (data.phone) {
+		customer.phone = data.phone;
+	}
+	if (data.isGold) {
+		customer.isGold = true;
+	}
+	try {
+		const result = customer.save();
+		return result;
+	}
+	catch (ex) {
+		for (field in ex.errors) {
+			console.log(ex.errors[field]);
+		}
+		return ex
+	};
 	res.send(customer);
 });
 
 router.put('/:id', auth, async (req, res) => {
-	let customer_id = req.params.id;
-	let customer = await customerModel.updateCustomer(customer_id, {
-		fName: req.body.fName,
-		lName: req.body.lName,
-		email: req.body.email,
-		phone: req.body.phone,
-		isGold: req.body.isGold,
-		favoriteGenres: req.body.favoriteGenres
-	})
-	if (!customer) return res.status(404).send('Customer not found.');
-	const { error } = customerModel.validateCustomer(req.body);
-	if (error) return res.status(400).send(error.details[0].message);
-
-	res.send(customer);
+	if ( mongoose.Types.ObjectId.isValid(req.params.id) ) {
+		const customer_id = req.params.id;
+		const result = await customerModel.Customer.findOneAndUpdate({ _id: customer_id }, req.body);
+		res.send(result);
+	}
+	else {
+		return res.status(400).send('Invalid Customer Id.');
+	}
 });
 
 router.delete('/:id', auth, async (req, res) => {
-	let customer_id = req.params.id;
-	let customer = await customerModel.deleteCustomer(customer_id);
-	if (!customer) return res.status(404).send('Customer not found.');
-
-	res.send(customer);
+	if ( mongoose.Types.ObjectId.isValid(req.params.id) ) {
+		const result = await customerModel.Customer.deleteOne({ _id: req.params.id });
+		res.send(result);
+	}
+	else {
+		return res.status(400).send('Invalid Customer Id.');
+	}
 });
 
 module.exports = router;

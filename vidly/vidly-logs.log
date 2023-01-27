@@ -76,3 +76,160 @@
 {"level":"info","message":"connected to mongodb..."}
 {"level":"info","message":"Morgan enabled . . ."}
 {"level":"info","message":"connected to mongodb..."}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"connected to mongodb..."}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb..."}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb..."}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb..."}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb..."}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb..."}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly"}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly"}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly"}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly"}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly"}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly"}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly"}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly"}
+{"level":"info","message":"Morgan enabled . . ."}
+{"level":"info","message":"App name: Vidly-Dev"}
+{"level":"info","message":"Mail server name: dev-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}
+{"level":"info","message":"App name: Vidly"}
+{"level":"info","message":"Mail server name: prod-mail-server"}
+{"level":"info","message":"Mail password: something_really_secret"}
+{"level":"info","message":"Listening on port 8080"}
+{"level":"info","message":"connected to mongodb://localhost/vidly_tests"}

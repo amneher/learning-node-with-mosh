@@ -1,4 +1,5 @@
 const config = require('config');
+const winston = require('winston');
 
 module.exports = function(app) {
 	if (!config.get('jwtPrivateKey')) {
@@ -14,7 +15,7 @@ module.exports = function(app) {
 	app.set('views', './views');  // this is the default, don't need to set it.
 
 	// Config
-	console.log(`App name: ${config.get('name')}`);
-	console.log(`Mail server name: ${config.get('mail.host')}`);
-	console.log(`Mail password: ${config.get('mail.password')}`);
+	winston.info(`App name: ${config.get('name')}`);
+	winston.info(`Mail server name: ${config.get('mail.host')}`);
+	winston.info(`Mail password: ${config.get('mail.password')}`);
 }

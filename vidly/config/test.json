@@ -1,0 +1,8 @@
+{
+	"name": "Vidly",
+	"jwtPrivateKey": "really secret test key",
+	"db": "mongodb://localhost/vidly_tests",
+	"mail": {
+		"host": "prod-mail-server"
+	}
+}

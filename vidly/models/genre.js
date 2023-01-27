@@ -17,49 +17,6 @@ const genreSchema = new mongoose.Schema({
 
 const Genre = new mongoose.model('Genre', genreSchema);
 
-async function getAllGenres() {
-	const genres = await Genre.find();
-	console.log(genres)
-	return genres
-}
-
-async function createGenre(data) {
-	const genre = new Genre({
-		name: data.name,
-		isActive: data.isActive
-	})
-	try {
-		return genre;
-	}
-	catch (ex) {
-		for (field in ex.errors) {
-			console.log(ex.errors[field]);
-		}
-	}
-}
-
-async function getGenreById(id) {
-	const genre = await Genre.findById(id);
-	return genre
-}
-
-async function getGenreByName(name) {
-	const genre = await Genre.findOne({
-		name: name
-	});
-	return genre
-}
-
-async function updateGenre(id, data) {
-	const genre = await Genre.findOneAndUpdate({ _id: id }, data);
-	return genre;
-}
-
-async function deleteGenre(id) {
-	const genre = await Genre.deleteOne({ _id: id });
-	return genre;
-}
-
 function validateGenre(genre) {
 	const schema = Joi.object({
 		name: Joi.string().min(3).required(),
@@ -70,10 +27,4 @@ function validateGenre(genre) {
 
 module.exports.Genre = Genre
 module.exports.genreSchema = genreSchema
-module.exports.getAllGenres = getAllGenres
-module.exports.createGenre = createGenre
-module.exports.getGenreById = getGenreById
-module.exports.getGenreByName = getGenreByName
-module.exports.updateGenre = updateGenre
-module.exports.deleteGenre = deleteGenre
 module.exports.validateGenre = validateGenre
