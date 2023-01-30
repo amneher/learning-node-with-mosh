@@ -10,8 +10,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-	let customer_id = req.params.id;
-	let customer = await customerModel.Customer.findById(id);
+	let customer = await customerModel.Customer.findById(req.params.id);
 	console.log(customer)
 	if (!customer) return res.status(404).send('Customer not found.');
 
