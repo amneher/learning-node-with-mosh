@@ -14,7 +14,6 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', validateObjectId, async (req, res) => {
 	const genre = await genreModel.Genre.findById(req.params.id);;
-	console.log(genre)
 	if (!genre) return res.status(404).send('Genre not found.');
 
 	res.send(genre);

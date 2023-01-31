@@ -3,6 +3,7 @@
 	"jwtPrivateKey": "really secret test key",
 	"db": "mongodb://localhost/vidly_tests",
 	"mail": {
-		"host": "prod-mail-server"
+		"host": "prod-mail-server",
+		"password": "something really secret."
 	}
 }

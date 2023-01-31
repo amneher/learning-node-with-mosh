@@ -12,7 +12,7 @@ describe('auth middleware', () => {
 	});
 	afterEach(async () => {
 		server.close()
-		await Genre.remove({});
+		await Genre.deleteMany({});
 	});
 
 	const exec = () => {

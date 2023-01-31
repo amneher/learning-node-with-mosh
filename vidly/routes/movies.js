@@ -11,10 +11,9 @@ router.get('/', async (req, res) => {
 	res.send(movies);
 });
 
-router.get('/byId/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
 	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
-		const movie_id = req.params.id;
-		const result = await movie.Movie.findById(movie_id);
+		const result = await movie.Movie.findById(req.params.id);
 		if (!result) return res.status(404).send('Movie not found.');
 
 		res.send(result);

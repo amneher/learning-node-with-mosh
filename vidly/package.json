@@ -14,6 +14,7 @@
     "bson": "^1.1.6",
     "config": "^3.3.9",
     "debug": "^4.3.4",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "helmet": "^6.0.1",

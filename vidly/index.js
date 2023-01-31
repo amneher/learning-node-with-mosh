@@ -1,6 +1,9 @@
 require('express-async-errors');
 const express = require('express');
 const winston = require('winston');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
 
