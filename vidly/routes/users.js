@@ -40,7 +40,8 @@ router.put('/:id', auth, async (req,res) => {
 	if ( mongoose.Types.ObjectId.isValid(req.params.id) ) {
 		const user_id = req.params.id;
 		const result = await User.findOneAndUpdate({ _id: user_id }, req.body);
-		res.send(result);
+		const user = await User.findById(req.params.id);
+		res.send(user);
 	}
 	else {
 		return res.status(400).send('Invalid User Id.');

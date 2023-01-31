@@ -1,6 +1,7 @@
 const express = require('express');
 const auth = require('../middleware/auth');
 const mongoose = require('mongoose');
+const winston = require('winston');
 const router = express.Router();
 
 const customerModel = require('../models/customer');
@@ -40,7 +41,7 @@ router.post('/', auth, async (req, res) => {
 		res.send(result);
 	}
 	catch (ex) {
-		res.send(ex);
+		winston.error(ex);
 	};
 	res.send(customer);
 });

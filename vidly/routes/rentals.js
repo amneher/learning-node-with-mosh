@@ -4,15 +4,15 @@ const rentalModel = require('../models/rental');
 const customerModel = require('../models/customer');
 const movieModel = require('../models/movie');
 const mongoose = require('mongoose');
+const winston = require('winston');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
 	const rentals = await rentalModel.Rental.find();
-	console.log(rentals)
 	res.send(rentals);
 });
 
-router.get('/byId/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
 	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
 		const rental_id = req.params.id;
 		const result = await rentalModel.Rental.findById(rental_id);
@@ -29,9 +29,9 @@ router.post('/', auth, async (req, res) => {
 	const { error } = rentalModel.validateRental(req.body);
 	if (error) return res.status(400).send(error);
 	const customer = await customerModel.Customer.findById(req.body.customer);
-	if (!customer) return res.status(400).send("Customer not found.");
+	if (!customer) return res.status(404).send("Customer not found.");
 	const movie = await movieModel.Movie.findById(req.body.movie);
-	if (!movie) return res.status(400).send("Movie not found.");
+	if (!movie) return res.status(404).send("Movie not found.");
 
 	const rental = new rentalModel.Rental({
 		customer: {
@@ -46,13 +46,14 @@ router.post('/', auth, async (req, res) => {
 		}
 	});
 	try {
+		await rental.save();
 		movie.numberInStock--;
 		movie.save();
 		res.send(rental);
 	}
 	catch (ex) {
-		console.log(ex);
-		return res.status(404).send('Rental not found.');
+		winston.error(ex);
+		return res.status(500).send('Issue saving Rental.');
 	}
 });
 

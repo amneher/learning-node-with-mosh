@@ -1,19 +1,21 @@
 const express = require('express');
 const auth = require('../middleware/auth');
+const mongoose = require('mongoose');
 const router = express.Router();
 
-const movie = require('../models/movie');
-const genreModel = require('../models/genre');
+const { Movie } = require('../models/movie');
+const { validateMovie } = require('../models/movie');
+const { Genre } = require('../models/genre');
 
 router.get('/', async (req, res) => {
-	const movies = await movie.Movie.find();
-	console.log(movies)
+	const movies = await Movie.find();
+	// console.log(movies)
 	res.send(movies);
 });
 
 router.get('/:id', async (req, res) => {
 	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
-		const result = await movie.Movie.findById(req.params.id);
+		const result = await Movie.findById(req.params.id);
 		if (!result) return res.status(404).send('Movie not found.');
 
 		res.send(result);
@@ -24,12 +26,12 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', auth, async (req, res) => {
-	const { error } = movie.validateMovie(req.body);
+	const { error } = validateMovie(req.body);
 	if (error) return res.status(400).send(error);
-	const genre = await genreModel.Genre.findById(req.body.genreId);
+	const genre = await Genre.findById(req.body.genreId);
 	if (!genre) return res.status(400).send('Genre not found.');
 
-	const m_obj = new movie.Movie({
+	const movie = new Movie({
 		title: req.body.title,
 		genre: {
 			_id: genre._id,
@@ -39,19 +41,20 @@ router.post('/', auth, async (req, res) => {
 		dailyRentalRate: req.body.dailyRentalRate
 	})
 	try {
-		res.send(m_obj);
+		const result = await movie.save();
+		res.send(result);
 	}
 	catch (ex) {
 		console.log(ex);
-		return res.status(404).send('Movie not found.');
+		return res.status(400).send('Issue saving Movie.' + ex);
 	}
 });
 
 router.put('/:id', auth, async (req,res) => {
 	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
-		const movie_id = req.params.id;
-		const result = await movie.Movie.findOneAndUpdate({ _id: movie_id }, req.body);
-		res.send(result);
+		const result = await Movie.findOneAndUpdate({ _id: req.params.id }, req.body);
+		const movie = await Movie.findById(req.params.id);
+		res.send(movie);
 	}
 	else {
 		return res.status(400).send('Invalid Movie Id.');
@@ -60,7 +63,7 @@ router.put('/:id', auth, async (req,res) => {
 
 router.delete('/:id', auth, async (req, res) => {
 	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
-		const result = await movie.Movie.deleteOne({ _id: req.params.id });
+		const result = await Movie.deleteOne({ _id: req.params.id });
 		res.send(result);
 	}
 	else {

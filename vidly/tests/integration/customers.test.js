@@ -40,7 +40,8 @@ describe('/api/customers', () => {
 					fName: "Billy",
 					lName: "Shears",
 					email: "billy2@sgtpepperslonelyheartsclubband.com",
-					favoriteGenres: ["cartoon", "anime", "comedy"]
+					favoriteGenres: ["cartoon", "anime", "comedy"],
+					phone: "8675309"
 				});
 			await customer.save();
 			const res = await request(server).get('/api/customers/' + customer._id)
@@ -51,8 +52,9 @@ describe('/api/customers', () => {
 			expect(res.status).toBe(404);
 		});
 		it('should return 404 if a genre is not found', async () => {
-			const badId = mongoose.Types.ObjectId();
+			const badId = mongoose.Types.ObjectId().toHexString();
 			const res = await request(server).get(`/api/customers/byId/${badId}`);
+			expect(res.notFound).toBeTruthy();
 			expect(res.status).toBe(404);
 		});
 	});
@@ -154,6 +156,46 @@ describe('/api/customers', () => {
 			const res = await exec();
 			expect(res.status).toBe(200);
 			expect(res.body).toHaveProperty('fName');
+		});
+
+		it("should return 400 if we send an invalid Id.", async () => {
+			testCustomer1_id = "richard pryor";
+			const res = await exec();
+			expect(res.status).toBe(400);
+		});
+	});
+
+	describe('DELETE /:id', () => {
+		let token;
+		let testCustomer1_id;
+
+		beforeEach(async () => {
+			token = new User().generateAuthToken();
+		});
+
+		const exec = async () => {
+			return await request(server)
+				.delete(`/api/customers/${ testCustomer1_id }`)
+				.set('x-auth-token', token);
+		}
+
+		it('should return a customer object if we both found the object and updated successfully.', async () => {
+			testCustomer1 = new Customer({ 
+				fName: "testward",
+				lName: "testerson",
+				email: "testward@gmail.com",
+				favoriteGenres: ["horror", "romcom"]	
+			});
+			await testCustomer1.save();
+			testCustomer1_id = testCustomer1._id
+			const res = await exec();
+			expect(res.status).toBe(200);
+		});
+
+		it("should return 400 if we send an invalid Id.", async () => {
+			testCustomer1_id = "richard pryor";
+			const res = await exec();
+			expect(res.status).toBe(400);
 		});
 	});
 });

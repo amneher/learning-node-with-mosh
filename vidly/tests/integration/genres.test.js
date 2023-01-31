@@ -32,12 +32,12 @@ describe('/api/genres', () => {
 			expect(res.body).toHaveProperty( 'name', testGenre1.name );
 		});
 		it('should return 404 if we do not send a valid Id', async () => {
-			const res = await request(server).get(`/api/genres/byId/1`);
+			const res = await request(server).get(`/api/genres/1`);
 			expect(res.status).toBe(404);
 		});
 		it('should return 404 if a genre is not found', async () => {
-			const badId = mongoose.Types.ObjectId();
-			const res = await request(server).get(`/api/genres/byId/${badId}`);
+			const badId = mongoose.Types.ObjectId().toHexString();
+			const res = await request(server).get(`/api/genres/${badId}`);
 			expect(res.status).toBe(404);
 		});
 	});
@@ -133,36 +133,46 @@ describe('/api/genres', () => {
 
 	describe('DELETE /:id', () => {
 		let token;
-		let testGenre1_id;
 
 		beforeEach(async () => {
 			token = new User({isAdmin: true}).generateAuthToken();
-			testGenre1 = new Genre({ name: 'testgenre' });
-			testGenre1_id = testGenre1._id;
-			await testGenre1.save();
 		});
 
-		const exec = async () => {
+		const exec = async (testGenre1_id) => {
 			return await request(server)
 				.delete(`/api/genres/${ testGenre1_id }`)
 				.set('x-auth-token', token);
 		}
 
 		it('should return successfully if we send a valid Id and are logged in.', async () => {
-			const res = await exec();
+			testGenre1 = new Genre({ name: 'testgenre' });
+			await testGenre1.save();
+			testGenre1_id = testGenre1._id;
+			const res = await exec(testGenre1_id);
 			expect(res.status).toBe(200);
 		});
 
 		it('should return a 403 if we are not logged in.', async () => {
+			testGenre1 = new Genre({ name: 'testgenre' });
+			await testGenre1.save();
+			testGenre1_id = testGenre1._id;			
 			token = new User().generateAuthToken();
-			const res = await exec();
+			const res = await exec(testGenre1_id);
 			expect(res.status).toBe(403);
 		});
 
 		it('should return a 404 if we send an invalid Id.', async () => {
 			testGenre1_id = 'apple';
-			const res = await exec();
+			const res = await exec(testGenre1_id);
+			// console.log(res)
 			expect(res.status).toBe(404);
+		});
+		it('should return 0 objects deleted if a genre is not found', async () => {
+			testGenre1_id = mongoose.Types.ObjectId().toHexString();
+			const res = await exec(testGenre1_id);
+			// console.log(res)
+			expect(res.status).toBe(200);
+			expect(res.text).toBe('{"acknowledged":true,"deletedCount":0}');
 		});
 	});
 });

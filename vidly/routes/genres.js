@@ -46,8 +46,7 @@ router.put('/:id', [ auth, validateObjectId ], async (req, res) => {
 router.delete('/:id', [ auth, admin, validateObjectId ], async (req, res) => {
 	const genre_id = req.params.id;
 	const genre = await genreModel.Genre.deleteOne({ _id: genre_id });
-	if (!genre) return res.status(404).send('Genre not found.');
-
+	
 	res.send(genre);
 });
 
