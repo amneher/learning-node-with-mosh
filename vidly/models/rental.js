@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
-const movie = require('./movie');
-const customer = require('./customer');
+const { Movie } = require('./movie');
+const { Customer } = require('./customer');
+const { Return } = require('./return');
 
 const rentalSchema = new mongoose.Schema({
 	customer: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'customer.Customer'
+		ref: 'Customer'
 		// type: customer.customerSchema,
 		// required: true
 	},
 	movie: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'movie.Movie'
+		ref: 'Movie'
 	},
 	rentalDate: {
 		type: Date,
@@ -22,6 +23,10 @@ const rentalSchema = new mongoose.Schema({
 	rentalDuration: {
 		type: Number,
 		default: 5
+	},
+	return: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Rental'
 	},
 	isOverdue: {
 		type: Boolean,

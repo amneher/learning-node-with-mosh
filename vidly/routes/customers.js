@@ -43,7 +43,7 @@ router.post('/', auth, async (req, res) => {
 	catch (ex) {
 		winston.error(ex);
 	};
-	res.send(customer);
+	res.status(500).send("Something went wrong...");
 });
 
 router.put('/:id', auth, async (req, res) => {

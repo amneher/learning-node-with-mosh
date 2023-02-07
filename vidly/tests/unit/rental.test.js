@@ -26,8 +26,8 @@ describe("Rental model", () => {
 
 	};
 
-	it("should return a Rental object if we send valid fields.", async () => {
-		await setup();
+	it("should return a Rental object if we send valid fields.", () => {
+		setup();
 		const testRental1 = new rentalModel.Rental({
 			"customer": testCustomer._id,
 			"movie": testMovie._id

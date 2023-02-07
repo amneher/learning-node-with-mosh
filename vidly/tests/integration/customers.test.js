@@ -7,6 +7,7 @@ const { User } = require('../../models/user');
 jest.setTimeout(20000);
 
 describe('/api/customers', () => {
+	let server;
 	beforeEach(() => { server = require('../../index'); });
 	afterEach(async () => { 
 		server.close(); 
@@ -132,10 +133,11 @@ describe('/api/customers', () => {
 		});
 
 		const exec = async () => {
-			return await request(server)
+			const res = await request(server)
 				.put(`/api/customers/${ testCustomer1_id }`)
 				.set('x-auth-token', token)
 				.send(payload);
+			return res;
 		}
 
 		it('should return a customer object if we both found the object and updated successfully.', async () => {

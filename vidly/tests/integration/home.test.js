@@ -2,6 +2,7 @@ const request = require('supertest');
 
 
 describe("Home Page", () => {
+	let server;
 	beforeEach(() => { server = require('../../index'); });
 	afterEach(async () => { 
 		server.close(); 

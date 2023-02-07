@@ -6,6 +6,7 @@ const { Movie } = require('../../models/movie');
 const { User } = require('../../models/user');
 
 describe('/api/movies', () => {
+	let server;
 	beforeEach(() => { server = require('../../index'); });
 	afterEach(async () => { 
 		server.close(); 
@@ -39,6 +40,7 @@ describe('/api/movies', () => {
 			});
 			await testMovie.save();
 			const testMovieId = testMovie._id.toHexString()
+			console.log(testMovie);
 			const res = await request(server).get(`/api/movies/${testMovieId}`)
 			expect(res.status).toBe(200);
 		});

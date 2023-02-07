@@ -8,6 +8,7 @@ const { Customer } = require('../../models/customer');
 const { Rental } = require('../../models/rental');
 
 describe('/api/rentals', () => {
+	let server;
 	beforeEach(() => { server = require('../../index'); });
 	afterEach(async () => { 
 		server.close(); 

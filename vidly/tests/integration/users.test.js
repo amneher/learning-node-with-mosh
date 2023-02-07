@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const { User } = require('../../models/user');
 
 describe('/api/users', () => {
+	let server;
 	beforeEach(() => { server = require('../../index'); });
 	afterEach(async () => { 
 		server.close(); 
