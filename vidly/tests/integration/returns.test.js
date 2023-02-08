@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
+const { Customer } = require('../../models/customer');
+const { Genre } = require('../../models/genre');
+const { Movie } = require('../../models/movie');
 const { Rental } = require('../../models/rental');
 const { Return } = require('../../models/return');
 const { User } = require('../../models/user');
@@ -15,33 +18,44 @@ describe("/api/returns", () => {
     beforeEach( async () => {
         server = require('../../index');
         token = new User().generateAuthToken();
-        customerId = mongoose.Types.ObjectId().toHexString();
-        movieId = mongoose.Types.ObjectId().toHexString();
+        const testCustomer = new Customer({
+            fName: "12345",
+            lName: "67890",
+            phone: "1234567890",
+            email: "1234567890",
+            favoriteGenres: ["anime", "horror"]
+        });
+        customerId = testCustomer._id.toHexString();
+        const testGenre = new Genre({
+            name: "testGenre1",
+            isActive: true
+        });
+        const testMovie = new Movie({
+            title: "12345",
+            dailyRentalRate: 2,
+            genre: testGenre
+        });
+        movieId = testMovie._id.toHexString();
+        await testMovie.save();
+        await testCustomer.save();
 
         testRental = new Rental({
-            customer: {
-                _id: customerId,
-                name: "12345",
-                phone: "1234567890"
-            },
-            movie: {
-                _id: movieId,
-                title: "12345",
-                dailyRentalRate: 2
-            }
+            customer: customerId,
+            movie: movieId,
+            rentalDate: Date.parse('2023-01-26T09:29:05-06:00')
         });
         testRentalId = testRental._id.toHexString();
         await testRental.save();
     });
     afterEach( async () => {
         server.close();
-        await Return.remove({});
-        await Rental.remove({});
+        await Return.deleteMany({});
+        await Rental.deleteMany({});
     });
 
     it("the test rental should be saved in the db.", async () => {
-        const testRental = await Rental.findById(testRentalId);
-        expect(testRental._id.toHexString()).toBe(testRentalId);
+        const testRental2 = await Rental.findById(testRentalId);
+        expect(testRental2._id.toHexString()).toBe(testRentalId);
     });
 
     describe('GET /api/returns/:id', () => {
@@ -53,13 +67,66 @@ describe("/api/returns", () => {
                 .set('x-auth-token', token);
 			expect(res.status).toBe(200);
         });
-        it("should not return a Return object if we send an invalid Id.", async () => {
-            await testReturn.save();
-            const randomId = new mongoose.Types.ObjectId().toHexString();
+        it("should return a 400 if we send an invalid Id.", async () => {
 			const res = await request(server)
-                .get('/api/returns/' + randomId)
+                .get('/api/returns/1')
                 .set('x-auth-token', token);
 			expect(res.status).toBe(400);
+        });
+        it("should return a 404 if we send a non-existent Id.", async () => {
+			const res = await request(server)
+                .get('/api/returns/63c9d00139a685728fd30a89')
+                .set('x-auth-token', token);
+			expect(res.status).toBe(404);
+        });
+    });
+
+    describe('POST /api/returns/', () => {
+
+        it("should return 200 if we send valid data.", async () => {
+            // const testRental2 = await Rental.findById(testRentalId);
+            // console.log(testRental2);
+            const returnData = {
+                rental: testRentalId
+            }
+            const res = await request(server)
+                .post('/api/returns/')
+                .set('x-auth-token', token)
+                .send(returnData);
+            expect(res.status).toBe(200);
+        });
+        it("should return 400 if we send invalid data.", async () => {
+            const returnData = {
+                rental: "23"
+            }
+            const res = await request(server)
+                .post('/api/returns/')
+                .set('x-auth-token', token)
+                .send(returnData);
+            expect(res.status).toBe(400);
+        });
+        it("should return 404 if we send an invalid rentalId.", async () => {
+            const returnData = {
+                rental: mongoose.Types.ObjectId().toHexString()
+            }
+            const res = await request(server)
+                .post('/api/returns/')
+                .set('x-auth-token', token)
+                .send(returnData);
+            expect(res.status).toBe(404);
+        });
+        it("should return 500 if we messed up the data.", async () => {
+            const testMovieId = mongoose.Types.ObjectId().toHexString();
+            testRental.movie = testMovieId;
+            testRental.save();
+            const returnData = {
+                rental: testRental._id.toHexString()
+            }
+            const res = await request(server)
+                .post('/api/returns/')
+                .set('x-auth-token', token)
+                .send(returnData);
+            expect(res.status).toBe(500);
         });
     });
 });

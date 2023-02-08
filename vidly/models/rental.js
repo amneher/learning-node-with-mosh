@@ -26,7 +26,7 @@ const rentalSchema = new mongoose.Schema({
 	},
 	return: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Rental'
+		ref: 'Return'
 	},
 	isOverdue: {
 		type: Boolean,

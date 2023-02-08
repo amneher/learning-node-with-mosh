@@ -1,7 +1,7 @@
 const express = require('express');
+const moment = require('moment');
 const auth = require('../middleware/auth');
 const { Rental } = require('../models/rental');
-const { Customer } = require('../models/customer');
 const { Movie } = require('../models/movie');
 const { Return, validateReturn } = require('../models/return');
 const mongoose = require('mongoose');
@@ -9,13 +9,13 @@ const winston = require('winston');
 const router = express.Router();
 
 router.get('/:id', auth, async (req, res) => {
-	if ( mongoose.Types.ObjectId.isValid(req.params.id)) {
-		try {
-			const result = await Return.findById(req.params.id);
-			res.send(result);
-		} catch (DocumentNotFoundError) {
+	const rental_id = req.params.id;
+	if ( mongoose.Types.ObjectId.isValid(rental_id)) {
+		const result = await Return.findById(rental_id);
+		if (!result) {
 			return res.status(404).send('Return not found.');
 		}
+		res.send(result);
 	}
 	else {
 		return res.status(400).send('Invalid Return Id.');
@@ -27,26 +27,26 @@ router.post('/', auth, async (req, res) => {
 	if (error) return res.status(400).send(error);
 	const rental = await Rental.findById(req.body.rental);
 	if (!rental) return res.status(404).send("Rental not found.");
+	const movie = await Movie.findById(rental.movie._id.toHexString());
 	
 
 	const returnObj = new Return({
-		rental: {
-			_id: rental._id
-		}
+		rental: rental._id
 	});
 	try {
-		const today = Date.now();
+		const today = moment();
 		const rentalDate = rental.rentalDate;
-		const duration = today - rentalDate;
-		returnObj.totalRentalFee = duration * movie.dailyRentalRate;
+		const durationEpoch = today - rentalDate;
+		const daySecs = 60 * 60 * 24 * 1000;
+		const duration = (Math.round((durationEpoch/daySecs) * 1) / 1);
+		const totalRate = duration * movie.dailyRentalRate;
+		returnObj.totalRentalFee = totalRate;
 		rental.return = returnObj._id;
 		await rental.save();
 		await returnObj.save();
-		const movie = Movie.findById(rental.movie._id);
 		movie.numberInStock++;
-		await movie.save();
-
-		console.log(returnObj);
+		await movie.save();		
+		// console.log(returnObj);
 		res.send(returnObj);
 	}
 	catch (ex) {
