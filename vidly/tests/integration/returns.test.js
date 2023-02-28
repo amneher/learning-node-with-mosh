@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
 const request = require('supertest');
+const mongoose = require('mongoose');
 const { Customer } = require('../../models/customer');
 const { Genre } = require('../../models/genre');
 const { Movie } = require('../../models/movie');
@@ -33,7 +33,8 @@ describe("/api/returns", () => {
         const testMovie = new Movie({
             title: "12345",
             dailyRentalRate: 2,
-            genre: testGenre
+            genre: testGenre,
+            numberInStock: 12
         });
         movieId = testMovie._id.toHexString();
         await testMovie.save();
@@ -48,7 +49,7 @@ describe("/api/returns", () => {
         await testRental.save();
     });
     afterEach( async () => {
-        server.close();
+        await server.close();
         await Return.deleteMany({});
         await Rental.deleteMany({});
     });
@@ -95,6 +96,25 @@ describe("/api/returns", () => {
                 .send(returnData);
             expect(res.status).toBe(200);
         });
+        it("should return 400 if the rental has already been returned.", async () => {
+            // const testRental2 = await Rental.findById(testRentalId);
+            // console.log(testRental2);
+            const returnData = {
+                rental: testRentalId
+            }
+            // expect this one to succeed.
+            const res = await request(server)
+                .post('/api/returns/')
+                .set('x-auth-token', token)
+                .send(returnData);
+            expect(res.status).toBe(200);
+            // expect this one to fail.
+            const res2 = await request(server)
+                .post('/api/returns/')
+                .set('x-auth-token', token)
+                .send(returnData);
+            expect(res.status).toBe(400);
+        });
         it("should return 400 if we send invalid data.", async () => {
             const returnData = {
                 rental: "23"
@@ -127,6 +147,28 @@ describe("/api/returns", () => {
                 .set('x-auth-token', token)
                 .send(returnData);
             expect(res.status).toBe(500);
+        });
+        it("should subtract qty from the movie when Rental is processed, then add qty when Return is processed.", async () => {
+            const testRental3 = new Rental({
+                    customer: customerId,
+                    movie: movieId,
+                    rentalDate: Date.parse('2023-01-26T09:29:05-06:00')
+                });
+            await testRental3.save();
+            let testMovie = await Movie.findById(movieId);
+            expect(testMovie.numberInStock).toBe(12);
+            const returnData = {
+                rental: testRental3._id.toHexString(),
+                returnDate: Date.parse('2023-02-08T21:35:21.930Z')
+            }
+            const res = await request(server)
+                .post('/api/returns/')
+                .set('x-auth-token', token)
+                .send(returnData);
+            expect(res.status).toBe(200);
+            testMovie = await Movie.findById(movieId);
+            expect(testMovie.numberInStock).toBe(13);
+            expect(res.body.totalRentalFee).toBe(26);
         });
     });
 });

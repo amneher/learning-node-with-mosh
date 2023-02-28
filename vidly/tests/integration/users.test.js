@@ -7,7 +7,7 @@ describe('/api/users', () => {
 	let server;
 	beforeEach(() => { server = require('../../index'); });
 	afterEach(async () => { 
-		server.close(); 
+		await server.close(); 
 		await User.deleteMany({});
 	});
 

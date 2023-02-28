@@ -11,7 +11,7 @@ describe('/api/rentals', () => {
 	let server;
 	beforeEach(() => { server = require('../../index'); });
 	afterEach(async () => { 
-		server.close(); 
+		await server.close(); 
 		await Movie.deleteMany({});
 		await Genre.deleteMany({});
 		await Customer.deleteMany({});

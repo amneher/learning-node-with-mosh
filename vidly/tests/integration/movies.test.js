@@ -9,7 +9,7 @@ describe('/api/movies', () => {
 	let server;
 	beforeEach(() => { server = require('../../index'); });
 	afterEach(async () => { 
-		server.close(); 
+		await server.close(); 
 		await Movie.deleteMany({});
 		await Genre.deleteMany({});
 	});

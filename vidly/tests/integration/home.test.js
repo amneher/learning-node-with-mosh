@@ -5,7 +5,7 @@ describe("Home Page", () => {
 	let server;
 	beforeEach(() => { server = require('../../index'); });
 	afterEach(async () => { 
-		server.close(); 
+		await server.close(); 
 	});
 	it('should return a rendered template.', async () => {
 		const res = await request(server).get("/");

@@ -27,6 +27,7 @@ const Return = new mongoose.model('Return', returnSchema);
 function validateReturn(returnObj) {
 	const schema = Joi.object({
 		rental: Joi.objectId().required(),
+		returnDate: Joi.date()
 	});
 	return schema.validate(returnObj);
 };

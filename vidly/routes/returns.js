@@ -28,7 +28,8 @@ router.post('/', auth, async (req, res) => {
 	const rental = await Rental.findById(req.body.rental);
 	if (!rental) return res.status(404).send("Rental not found.");
 	const movie = await Movie.findById(rental.movie._id.toHexString());
-	
+	console.log(rental.return);
+	if (rental.returnDate) return res.status(400).send("Rental already returned.");
 
 	const returnObj = new Return({
 		rental: rental._id
@@ -41,7 +42,7 @@ router.post('/', auth, async (req, res) => {
 		const duration = (Math.round((durationEpoch/daySecs) * 1) / 1);
 		const totalRate = duration * movie.dailyRentalRate;
 		returnObj.totalRentalFee = totalRate;
-		rental.return = returnObj._id;
+		rental.returnDate = moment();
 		await rental.save();
 		await returnObj.save();
 		movie.numberInStock++;
