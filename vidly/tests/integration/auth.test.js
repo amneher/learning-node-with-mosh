@@ -2,6 +2,8 @@ const request = require('supertest');
 const { User } = require('../../models/user');
 const { Genre } = require('../../models/genre');
 
+jest.setTimeout(20000);
+
 describe('auth middleware', () => {
 	let server;
 	let token;

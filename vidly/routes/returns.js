@@ -8,6 +8,14 @@ const mongoose = require('mongoose');
 const winston = require('winston');
 const router = express.Router();
 
+router.get('/', auth, async (req, res) => {
+	const result = await Return.find();
+	if (!result) {
+		return res.status(404).send('Return not found.');
+	}
+	res.send(result);
+});
+
 router.get('/:id', auth, async (req, res) => {
 	const rental_id = req.params.id;
 	if ( mongoose.Types.ObjectId.isValid(rental_id)) {

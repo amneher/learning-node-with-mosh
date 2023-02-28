@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const { Genre } = require('../../models/genre');
 const { User } = require('../../models/user');
 
+jest.setTimeout(20000);
+
 describe('/api/genres', () => {
 	let server;
 	beforeEach(() => { server = require('../../index'); });

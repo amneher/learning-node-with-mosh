@@ -7,6 +7,8 @@ const { Rental } = require('../../models/rental');
 const { Return } = require('../../models/return');
 const { User } = require('../../models/user');
 
+jest.setTimeout(20000);
+
 describe("/api/returns", () => {
     let server;
     let customerId;

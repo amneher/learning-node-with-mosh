@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
-const { Movie } = require('./movie');
-const { Customer } = require('./customer');
-const { Rental } = require('./rental');
 
 const returnSchema = new mongoose.Schema({
 	rental: {

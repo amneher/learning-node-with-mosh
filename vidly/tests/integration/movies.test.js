@@ -5,6 +5,8 @@ const { Genre } = require('../../models/genre');
 const { Movie } = require('../../models/movie');
 const { User } = require('../../models/user');
 
+jest.useFakeTimers();
+
 describe('/api/movies', () => {
 	let server;
 	beforeEach(() => { server = require('../../index'); });

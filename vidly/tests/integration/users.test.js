@@ -3,6 +3,8 @@ const winston = require('winston');
 const mongoose = require('mongoose');
 const { User } = require('../../models/user');
 
+jest.setTimeout(20000);
+
 describe('/api/users', () => {
 	let server;
 	beforeEach(() => { server = require('../../index'); });

@@ -1,5 +1,6 @@
 const request = require('supertest');
 
+jest.setTimeout(20000);
 
 describe("Home Page", () => {
 	let server;

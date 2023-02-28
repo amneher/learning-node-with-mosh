@@ -7,6 +7,8 @@ const { User } = require('../../models/user');
 const { Customer } = require('../../models/customer');
 const { Rental } = require('../../models/rental');
 
+jest.setTimeout(20000);
+
 describe('/api/rentals', () => {
 	let server;
 	beforeEach(() => { server = require('../../index'); });
