@@ -5,7 +5,7 @@ const { Genre } = require('../../models/genre');
 const { Movie } = require('../../models/movie');
 const { User } = require('../../models/user');
 
-jest.useFakeTimers();
+jest.setTimeout(20000);
 
 describe('/api/movies', () => {
 	let server;

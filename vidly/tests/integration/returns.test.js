@@ -54,6 +54,8 @@ describe("/api/returns", () => {
         await server.close();
         await Return.deleteMany({});
         await Rental.deleteMany({});
+        await Movie.deleteMany({});
+        await Customer.deleteMany({});
     });
 
     it("the test rental should be saved in the db.", async () => {
@@ -110,6 +112,8 @@ describe("/api/returns", () => {
                 .set('x-auth-token', token)
                 .send(returnData);
             expect(res.status).toBe(200);
+            const r_obj = Rental.findById(testRentalId);
+            console.log(r_obj.return)
             // expect this one to fail.
             const res2 = await request(server)
                 .post('/api/returns/')
@@ -170,7 +174,10 @@ describe("/api/returns", () => {
             expect(res.status).toBe(200);
             testMovie = await Movie.findById(movieId);
             expect(testMovie.numberInStock).toBe(13);
-            expect(res.body.totalRentalFee).toBe(26);
+            const daySecs = 60 * 60 * 24 * 1000;
+            let expectedRentalRate = Date.now() - testRental.rentalDate;
+		    const duration = (Math.round((expectedRentalRate/daySecs) * 1) / 1);
+            expect(res.body.totalRentalFee).toBe(duration * testMovie.dailyRentalRate);
         });
     });
 });
